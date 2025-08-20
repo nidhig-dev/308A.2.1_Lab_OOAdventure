@@ -16,7 +16,7 @@ companion:{
     companion:{
         name:"Frank",
         type:"Flea",
-        belongings:["small hat","sunglasses"],
+        inventory:["small hat","sunglasses"],
     }
 },
     // Give Robin the following method:
@@ -55,7 +55,17 @@ class Character{
     }
 }
 // Now, we can re - create Robin using the Character class!
-const Robin=new Character("Robin");
-Robin.inventory=['sword','potion','artifact'];
-Robin.companion={name:'Leo',type:'Cat'}
-console.log(Robin);
+const robin=new Character("Robin");
+robin.inventory=['sword','potion','artifact'];
+robin.companion= new Character("Leo");
+robin.companion.type="Cat";
+robin.companion.companion=new Character("Frank");
+robin.companion.companion.type='Flea';
+robin.companion.companion.inventory = ['small hat', 'sunglasses'];
+
+//console.log(robin);
+
+// Even the companions can roll now; give it a try!
+robin.roll();
+robin.companion.roll();
+robin.companion.companion.roll();
