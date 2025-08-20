@@ -66,6 +66,63 @@ robin.companion.companion.inventory = ['small hat', 'sunglasses'];
 //console.log(robin);
 
 // Even the companions can roll now; give it a try!
-robin.roll();
-robin.companion.roll();
-robin.companion.companion.roll();
+// robin.roll();
+// robin.companion.roll();
+// robin.companion.companion.roll();
+
+// PART 3 -CLASS FEATURES------------------------------------------|
+class Adventurer extends Character{
+    constructor(name,role){
+        super(name);
+        // Adventurers have specialized roles.
+        this.role=role;
+        // Every adventurer starts with a bed and 50 gold coins.
+        this.inventory.push("bedroll","50 gold coins");
+    }
+    // Adventurers have the ability to scout ahead of them.
+    scout(){
+        console.log(`${this.name} is scouting ahead`);
+        super.roll();
+    }
+    // What else should an adventurer be able to do? What other properties should they have?
+
+    collectInventory(collectible) {
+        this.inventory.push(collectible);
+    }
+    loseHealth(){
+        this.health-=1;
+    }
+}
+// Next, create a Companion class with properties and methods specific to the companions.
+
+class Companions extends Character {
+    constructor(name, type, inventory) {
+        super(name);
+        // companions have specialized types.
+        this.type = type;
+        // Every companion starts with a litterbox and 30 gold coins.
+        this.inventory=inventory;
+        // .push("litterbox", "30 gold coins");
+    }
+    // companions have the ability to scout ahead of them.
+    scout() {
+        console.log(`${this.name} is scouting ahead`);
+        super.roll();
+    }
+    collectInventory(collectible) {
+        this.inventory.push(collectible);
+    }
+    loseHealth() {
+        this.health -= 1;
+    }
+}
+
+const adRobin = new Adventurer("Robin", "Archer");
+const compLeo = new Companions("Leo", "Cat", ["litterbox", "30 gold coins"]);
+const compFrank=new Companions("Frank","Flea",["small hat","sunglasses"]);
+adRobin.collectInventory("Potion");
+compLeo.scout();
+adRobin.loseHealth();
+console.log(`adventure name is ${adRobin.name}`, adRobin);
+console.log(`companion name is ${compLeo.name}`, compLeo);
+console.log(`companion name is ${compFrank.name}`, compFrank);
