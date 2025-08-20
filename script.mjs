@@ -77,15 +77,18 @@ class Adventurer extends Character{
     // Add a static ROLES array to the Adventurer class, with the values “Fighter,” “Healer,” and “Wizard.” 
     // Feel free to add other roles, if you desire!
     
-    static ROLES=["Fighter”,“Healer”,“Wizard","Archer"];
+    static ROLES=["Fighter","Healer","Wizard","Archer"];
     constructor(name,role){
         super(name);
+        
         // Adventurers have specialized roles.
         try {
             this.role=role;
         let noRole=false;
         // Add a check to the constructor of the Adventurer class that ensures the given role matches one of these values.
         for(let i=0;i<Adventurer.ROLES.length;i++){
+            console.log("role is",this.role);
+            console.log("array role is",Adventurer.ROLES[i]);
             if(this.role!=Adventurer.ROLES[i]){
                 noRole=false;
                 
@@ -95,7 +98,7 @@ class Adventurer extends Character{
                 break;
             }
         }
-        
+        console.log("no role is",noRole);
         if(noRole==false)
         {
             throw new Error("Not a valid Role");
@@ -160,3 +163,27 @@ adRobin.loseHealth();
 console.log(`adventure name is ${adRobin.name}`, adRobin);
 console.log(`companion name is ${compLeo.name}`, compLeo);
 console.log(`companion name is ${compFrank.name}`, compFrank);
+
+// PART 5 ---------------------------------------------------------------|
+class AdventurerFactory {
+    constructor(role) {
+        this.role = role;
+        this.adventurers = [];
+    }
+    generate(name) {
+        const newAdventurer = new Adventurer(name, this.role);
+        this.adventurers.push(newAdventurer);
+    }
+    findByIndex(index) {
+        return this.adventurers[index];
+    }
+    findByName(name) {
+        return this.adventurers.find((a) => a.name === name);
+    }
+}
+
+const healers = new AdventurerFactory("Healer");
+const newLila = healers.generate("Lila");
+const newNidhi=healers.generate("Nidhi");
+console.log("My inventroy is",healers.adventurers);
+console.log(healers);
