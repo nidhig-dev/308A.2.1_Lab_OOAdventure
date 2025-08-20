@@ -42,6 +42,8 @@ for(let i=0;i<adventurer.inventory.length;i++){
 // that every character should have health (which we will standardize to a maximum of 100, 
 // and an inventory (even if the inventory is empty).
 class Character{
+    // Add a static MAX_HEALTH property to the Character class, equal to 100.
+    static MAX_HEALTH = 100;
     constructor(name){
         this.name=name;
         this.health=100;
@@ -72,13 +74,43 @@ robin.companion.companion.inventory = ['small hat', 'sunglasses'];
 
 // PART 3 -CLASS FEATURES------------------------------------------|
 class Adventurer extends Character{
+    // Add a static ROLES array to the Adventurer class, with the values “Fighter,” “Healer,” and “Wizard.” 
+    // Feel free to add other roles, if you desire!
+    
+    static ROLES=["Fighter”,“Healer”,“Wizard","Archer"];
     constructor(name,role){
         super(name);
         // Adventurers have specialized roles.
-        this.role=role;
+        try {
+            this.role=role;
+        let noRole=false;
+        // Add a check to the constructor of the Adventurer class that ensures the given role matches one of these values.
+        for(let i=0;i<Adventurer.ROLES.length;i++){
+            if(this.role!=Adventurer.ROLES[i]){
+                noRole=false;
+                
+            }
+            else{
+                noRole=true;
+                break;
+            }
+        }
+        
+        if(noRole==false)
+        {
+            throw new Error("Not a valid Role");
+        }
         // Every adventurer starts with a bed and 50 gold coins.
         this.inventory.push("bedroll","50 gold coins");
+        }
+        catch (error) {
+            console.error(error.message);
+            // End the game!
+            process.exit(1);
+        }
+
     }
+
     // Adventurers have the ability to scout ahead of them.
     scout(){
         console.log(`${this.name} is scouting ahead`);
@@ -92,6 +124,8 @@ class Adventurer extends Character{
     loseHealth(){
         this.health-=1;
     }
+
+    
 }
 // Next, create a Companion class with properties and methods specific to the companions.
 
