@@ -53,7 +53,8 @@ class Character{
     // Add the roll method to the Character class.
     roll(mod = 0) {
         const result = Math.floor(Math.random() * 20) + 1 + mod;
-        console.log(`${this.name} rolled a ${result}.`)
+        // console.log(`${this.name} rolled a ${result}.`)
+        return(result);
     }
 }
 // Now, we can re - create Robin using the Character class!
@@ -76,7 +77,7 @@ robin.companion.companion.inventory = ['small hat', 'sunglasses'];
 class Adventurer extends Character{
     // Add a static ROLES array to the Adventurer class, with the values “Fighter,” “Healer,” and “Wizard.” 
     // Feel free to add other roles, if you desire!
-    
+    // PART 4 -CLASS UNIFORMS------------------------------------------------------------|
     static ROLES=["Fighter","Healer","Wizard","Archer"];
     constructor(name,role){
         super(name);
@@ -87,8 +88,7 @@ class Adventurer extends Character{
         let noRole=false;
         // Add a check to the constructor of the Adventurer class that ensures the given role matches one of these values.
         for(let i=0;i<Adventurer.ROLES.length;i++){
-            console.log("role is",this.role);
-            console.log("array role is",Adventurer.ROLES[i]);
+            
             if(this.role!=Adventurer.ROLES[i]){
                 noRole=false;
                 
@@ -98,7 +98,7 @@ class Adventurer extends Character{
                 break;
             }
         }
-        console.log("no role is",noRole);
+        
         if(noRole==false)
         {
             throw new Error("Not a valid Role");
@@ -120,12 +120,26 @@ class Adventurer extends Character{
         super.roll();
     }
     // What else should an adventurer be able to do? What other properties should they have?
-
-    collectInventory(collectible) {
-        this.inventory.push(collectible);
+//PART 7------------------------------------------------------------------------------|
+    addInventory(item) {
+        this.inventory.push(item);
+    }
+    removeInventory(item){
+        this.inventory.pop(item);
     }
     loseHealth(){
         this.health-=1;
+    }
+    // PART 6-DEVELOPING SKILLS---------------------------------------------------------|
+    
+    
+    // Create an additional method, duel(), for the Adventurer class with the following functionality:
+    // Accept an Adventurer as a parameter.
+    duel(name){
+        // Use the roll() functionality to create opposing rolls for each adventurer.
+        let rollCount =super.roll();        
+        // console.log(name);
+        return(rollCount);
     }
 
     
@@ -146,8 +160,8 @@ class Companions extends Character {
         console.log(`${this.name} is scouting ahead`);
         super.roll();
     }
-    collectInventory(collectible) {
-        this.inventory.push(collectible);
+    addInventory(item) {
+        this.inventory.push(item);
     }
     loseHealth() {
         this.health -= 1;
@@ -155,16 +169,54 @@ class Companions extends Character {
 }
 
 const adRobin = new Adventurer("Robin", "Archer");
+const adLila=new Adventurer("Lila","Healer");
 const compLeo = new Companions("Leo", "Cat", ["litterbox", "30 gold coins"]);
 const compFrank=new Companions("Frank","Flea",["small hat","sunglasses"]);
-adRobin.collectInventory("Potion");
+// PART 7-----------------------------------------------------------------|
+adRobin.addInventory("Potion");
+console.log(adRobin);
+adRobin.removeInventory("Potion");
+console.log(adRobin);
 compLeo.scout();
-adRobin.loseHealth();
-console.log(`adventure name is ${adRobin.name}`, adRobin);
-console.log(`companion name is ${compLeo.name}`, compLeo);
-console.log(`companion name is ${compFrank.name}`, compFrank);
 
-// PART 5 ---------------------------------------------------------------|
+// PART 6-------------------------------------------------------------------------|
+// Repeat this process until one of the two adventurers reaches 50 health.
+let rollCount1=0;
+let rollCount2=0;
+while(adRobin.health>50 && adLila.health>50){
+rollCount1 =adRobin.duel("Robin");
+rollCount2=adLila.duel("Lila")
+//     Subtract 1 from the adventurer with the lower roll.
+
+if(rollCount1<rollCount2){
+    adRobin.loseHealth();
+}
+// if roll count is same , none loses health, that is why check else if statement also
+else if (rollCount1 > rollCount2){
+    adLila.loseHealth();
+}
+    // console.log(`Outcome ${adRobin.name}:dice roll :${rollCount1} and health: ${adRobin.health}`);
+    // console.log(`Outcome ${adLila.name}:dice roll :${rollCount2} and health: ${adLila.health}`);
+
+}
+// Log the results of this “round” of the duel, including the rolls and current health values.
+
+console.log(`Final Outcome: Here are the duel results: ${adRobin.name}:final dice roll :${rollCount1}, health: ${adRobin.health} and  ${adLila.name}: final dice roll :${rollCount2}, health: ${adLila.health}`);
+// console.log(`Outcome ${adLila.name}:dice roll :${rollCount2} and health: ${adLila.health}`);
+// Log the winner of the duel: the adventurer still above 50 health.
+
+if (adRobin.health <= 50) {
+    console.log(`${adLila.name} won!`)
+}
+else if (adLila.health <= 50) {
+    console.log(`${adRobin.name} won!`)
+}
+
+// console.log(`adventure name is ${adRobin.name}`, adRobin);
+// console.log(`companion name is ${compLeo.name}`, compLeo);
+// console.log(`companion name is ${compFrank.name}`, compFrank);
+
+// PART 5 -GATHER YOUR PARTY---------------------------------------------------------------|
 class AdventurerFactory {
     constructor(role) {
         this.role = role;
@@ -185,5 +237,6 @@ class AdventurerFactory {
 const healers = new AdventurerFactory("Healer");
 const newLila = healers.generate("Lila");
 const newNidhi=healers.generate("Nidhi");
-console.log("My inventroy is",healers.adventurers);
-console.log(healers);
+// console.log("My inventroy is",healers.adventurers);
+// console.log(healers);
+
